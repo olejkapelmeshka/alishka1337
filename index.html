@@ -165,6 +165,10 @@ h2.title{
 .venue-name{font-family:var(--serif);font-size:clamp(26px,4vw,36px);margin:0 0 8px;color:var(--gold-soft)}
 .venue-addr{font-family:var(--serif);font-size:19px;color:var(--text);margin:0 0 6px}
 .btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:28px}
+.map-frame{position:relative;margin:26px auto 12px;max-width:100%;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--bg-2);box-shadow:0 14px 34px rgba(0,0,0,.38)}
+.map-frame:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:16px;box-shadow:inset 0 0 0 1px rgba(198,160,74,.16)}
+.map-frame iframe{display:block;width:100%;height:clamp(240px,46vw,360px);border:0}
+.map-hint{font-family:var(--sans);font-size:13px;color:var(--muted);margin:0}
 .btn{
   display:inline-block;padding:14px 30px;border:1px solid var(--gold);border-radius:999px;
   color:var(--gold-soft);text-decoration:none;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
@@ -218,6 +222,9 @@ footer{position:relative;padding:96px 20px;text-align:center;overflow:hidden}
 
 /* ---------- mobile ---------- */
 @media (max-width:640px){
+  .map-frame{border-radius:12px;margin:20px auto 10px}
+  .map-frame:after{border-radius:12px}
+  .map-frame iframe{height:260px}
   section{padding:70px 18px}
   .nav-links{gap:16px}
   .nav-links a{font-size:10px;letter-spacing:.1em}
@@ -345,6 +352,16 @@ footer{position:relative;padding:96px 20px;text-align:center;overflow:hidden}
       <h3 class="venue-name">Grand Hall</h3>
       <p class="venue-addr">г. Майкоп, ул. МОПРа, 127</p>
       <p class="muted">Ждём вас к 18:00</p>
+
+      <div class="map-frame">
+        <iframe
+          src="https://yandex.ru/map-widget/v1/?text=Майкоп%2C%20улица%20МОПРа%2C%20127&amp;z=17"
+          title="Карта: Grand Hall, Майкоп, ул. МОПРа, 127"
+          loading="lazy"
+          allowfullscreen></iframe>
+      </div>
+      <p class="map-hint">Карту можно приблизить и подвинуть — или открыть маршрут в приложении</p>
+
       <div class="btn-row">
         <a class="btn" href="https://yandex.ru/maps/?text=Майкоп%2C%20улица%20МОПРа%2C%20127" target="_blank" rel="noopener">Яндекс Карты</a>
         <a class="btn" href="https://2gis.ru/search/Майкоп%20МОПРа%20127" target="_blank" rel="noopener">2ГИС</a>
@@ -355,7 +372,7 @@ footer{position:relative;padding:96px 20px;text-align:center;overflow:hidden}
 
 <section id="rsvp" class="rv" style="background:var(--bg-2);border-top:1px solid var(--line)">
   <div class="narrow">
-    <div class="center">
+    <div class="center" id="rsvpHead">
       <div class="eyebrow">Обратная связь</div>
       <h2 class="title">Подтвердите присутствие</h2>
       <p class="muted">Пожалуйста, дайте ответ до 25 августа 2026 года — это поможет нам всё подготовить</p>
@@ -506,10 +523,12 @@ var CONFIG = {
     if(!name.value.trim()){name.focus();name.style.borderColor="#C6A04A";return}
     var data={};
     new FormData(form).forEach(function(v,k){data[k]=v});
-    function done(){form.style.display="none";thanks.style.display="block";thanks.scrollIntoView({behavior:"smooth",block:"center"})}
+    function done(){var head=document.getElementById("rsvpHead");if(head){head.style.display="none"}form.style.display="none";thanks.style.display="block";thanks.scrollIntoView({behavior:"smooth",block:"center"})}
     if(!CONFIG.rsvpEndpoint){console.log("RSVP (демо-режим):",data);done();return}
-    fetch(CONFIG.rsvpEndpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)})
-      .then(done).catch(done);
+    done();
+    try{
+      fetch(CONFIG.rsvpEndpoint,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).catch(function(){});
+    }catch(e){}
   });
 })();
 </script>
