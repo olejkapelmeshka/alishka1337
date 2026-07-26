@@ -168,7 +168,6 @@ h2.title{
 .map-frame{position:relative;margin:26px auto 12px;max-width:100%;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--bg-2);box-shadow:0 14px 34px rgba(0,0,0,.38)}
 .map-frame:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:16px;box-shadow:inset 0 0 0 1px rgba(198,160,74,.16)}
 .map-frame iframe{display:block;width:100%;height:clamp(240px,46vw,360px);border:0}
-.map-hint{font-family:var(--sans);font-size:13px;color:var(--muted);margin:0}
 .btn{
   display:inline-block;padding:14px 30px;border:1px solid var(--gold);border-radius:999px;
   color:var(--gold-soft);text-decoration:none;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
@@ -355,12 +354,11 @@ footer{position:relative;padding:96px 20px;text-align:center;overflow:hidden}
 
       <div class="map-frame">
         <iframe
-          src="https://yandex.ru/map-widget/v1/?text=Майкоп%2C%20улица%20МОПРа%2C%20127&amp;z=17"
+          src="https://yandex.ru/map-widget/v1/?ll=40.072327%2C44.598706&amp;z=16&amp;l=map&amp;pt=40.072327%2C44.598706%2Cpm2rdm"
           title="Карта: Grand Hall, Майкоп, ул. МОПРа, 127"
           loading="lazy"
           allowfullscreen></iframe>
       </div>
-      <p class="map-hint">Карту можно приблизить и подвинуть — или открыть маршрут в приложении</p>
 
       <div class="btn-row">
         <a class="btn" href="https://yandex.ru/maps/?text=Майкоп%2C%20улица%20МОПРа%2C%20127" target="_blank" rel="noopener">Яндекс Карты</a>
